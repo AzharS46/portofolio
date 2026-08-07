@@ -120,6 +120,28 @@ const Contact = () => {
   useEffect(() => {
     AOS.init({ once: true, duration: 800 })
     fetchComments()
+
+    if (supabase) {
+      const channel = supabase
+        .channel('realtime_comments')
+        .on(
+          'postgres_changes',
+          { event: 'INSERT', schema: 'public', table: 'comments' },
+          (payload) => {
+            if (payload.new) {
+              setComments((prev) => {
+                if (prev.some((c) => c.id === payload.new.id)) return prev
+                return [payload.new, ...prev]
+              })
+            }
+          }
+        )
+        .subscribe()
+
+      return () => {
+        supabase.removeChannel(channel)
+      }
+    }
   }, [])
 
   const fetchComments = async () => {
