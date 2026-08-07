@@ -8,14 +8,14 @@ import { useLanguage } from "../context/LanguageContext"
 const sampleProjects = [
   {
     id: 1,
-    Title: "E-Commerce Platform",
-    Description: "A modern e-commerce platform built with React and Node.js, featuring real-time inventory management and seamless payment integration.",
-    FullDescription: "Comprehensive full-stack e-commerce solution designed for scalability. Features modern product catalogs, dynamic cart management, integrated payment gateway API, real-time database synchronization via WebSockets, and a robust admin dashboard for product management.",
+    Title: "Web Math",
+    Description: "Interactive web application for mathematical calculations, formula visualization, and fast problem solving.",
+    FullDescription: "An interactive web mathematics platform designed to simplify math calculations, formula visualizer, and practice tools built with HTML5, CSS3, and JavaScript.",
     Img: "/project1.png",
-    Link: "https://github.com",
-    Github: "https://github.com",
-    TechStack: ["React", "Node.js", "MongoDB", "Tailwind CSS", "Express"],
-    Features: ["Responsive Design", "Payment Gateway Integration", "Admin Management Panel", "Real-Time Inventory Sync", "Dark Mode Theme"],
+    Link: "https://github.com/AzharS46/web_math",
+    Github: "https://github.com/AzharS46/web_math",
+    TechStack: ["HTML5", "CSS3", "JavaScript"],
+    Features: ["Interactive Math Calculator", "Responsive Web Interface", "Fast Calculation Engine", "Clean UI Design"],
     is_published: true,
   },
   {
