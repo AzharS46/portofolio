@@ -8,14 +8,14 @@ import { useLanguage } from "../context/LanguageContext"
 const sampleProjects = [
   {
     id: 1,
-    Title: "Web Math",
-    Description: "Interactive web application for mathematical calculations, formula visualization, and fast problem solving.",
-    FullDescription: "An interactive web mathematics platform designed to simplify math calculations, formula visualizer, and practice tools built with HTML5, CSS3, and JavaScript.",
-    Img: "/project1.png",
+    Title: "MathNusa (Web Math)",
+    Description: "Jawab Soal Matematika Lengkap dengan Langkah Solusi. Aplikasi web interaktif untuk aljabar, kalkulus, dan plotter grafik.",
+    FullDescription: "Platform matematika interaktif MathNusa yang dirancang untuk menjawab soal matematika lengkap dengan langkah-langkah solusi mendalam, fitur scan gambar, bank rumus lengkap, dan plotter grafik interaktif.",
+    Img: "/mathnusa.png",
     Link: "https://github.com/AzharS46/web_math",
     Github: "https://github.com/AzharS46/web_math",
-    TechStack: ["HTML5", "CSS3", "JavaScript"],
-    Features: ["Interactive Math Calculator", "Responsive Web Interface", "Fast Calculation Engine", "Clean UI Design"],
+    TechStack: ["HTML5", "CSS3", "JavaScript", "MathEngine"],
+    Features: ["Penjawab Soal Matematika", "Langkah Solusi Lengkap", "Bank Rumus & Plotter", "Tema Dark Emerald"],
     is_published: true,
   },
   {
