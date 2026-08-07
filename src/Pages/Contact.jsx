@@ -1,9 +1,10 @@
 import React, { useEffect, useState, memo } from "react"
 import { Helmet } from "react-helmet-async"
-import { Send, User, MessageSquare, Sparkles, Pin, Camera, Clock } from "lucide-react"
+import { Send, User, MessageSquare, Sparkles, Pin, Camera, Clock, Loader2 } from "lucide-react"
 import AOS from 'aos'
 import 'aos/dist/aos.css'
 import { useLanguage } from "../context/LanguageContext"
+import { supabase } from "../supabase"
 
 const sampleComments = [
   {
@@ -111,29 +112,88 @@ const CertificateCard = memo(({ cert, index }) => (
 
 const Contact = () => {
   const { t } = useLanguage()
-  const [comments, setComments] = useState(sampleComments)
+  const [comments, setComments] = useState([])
   const [newComment, setNewComment] = useState("")
   const [userName, setUserName] = useState("")
+  const [isSubmitting, setIsSubmitting] = useState(false)
 
   useEffect(() => {
     AOS.init({ once: true, duration: 800 })
+    fetchComments()
   }, [])
 
-  const handleSubmit = (e) => {
-    e.preventDefault()
-    if (!newComment.trim() || !userName.trim()) return
+  const fetchComments = async () => {
+    if (supabase) {
+      try {
+        const { data, error } = await supabase
+          .from('comments')
+          .select('*')
+          .order('created_at', { ascending: false })
 
-    const comment = {
+        if (!error && data && data.length > 0) {
+          setComments(data)
+          return
+        }
+      } catch (err) {
+        console.warn("Failed to fetch from Supabase, falling back to LocalStorage:", err)
+      }
+    }
+
+    // Fallback to localStorage or sampleComments
+    const saved = localStorage.getItem('portfolio_comments')
+    if (saved) {
+      try {
+        setComments(JSON.parse(saved))
+      } catch {
+        setComments(sampleComments)
+      }
+    } else {
+      setComments(sampleComments)
+    }
+  }
+
+  const handleSubmit = async (e) => {
+    e.preventDefault()
+    if (!newComment.trim() || !userName.trim() || isSubmitting) return
+
+    setIsSubmitting(true)
+    const commentObj = {
       id: Date.now().toString(),
-      content: newComment,
-      user_name: userName,
+      content: newComment.trim(),
+      user_name: userName.trim(),
       profile_image: null,
       is_pinned: false,
       created_at: new Date().toISOString(),
     }
-    
-    setComments([comment, ...comments])
+
+    if (supabase) {
+      try {
+        const { data, error } = await supabase
+          .from('comments')
+          .insert([{
+            user_name: commentObj.user_name,
+            content: commentObj.content,
+            is_pinned: false
+          }])
+          .select()
+
+        if (!error && data && data[0]) {
+          setComments([data[0], ...comments])
+          setNewComment("")
+          setIsSubmitting(false)
+          return
+        }
+      } catch (err) {
+        console.warn("Failed to save to Supabase, falling back to LocalStorage:", err)
+      }
+    }
+
+    // Fallback to local storage update
+    const updated = [commentObj, ...comments]
+    setComments(updated)
+    localStorage.setItem('portfolio_comments', JSON.stringify(updated))
     setNewComment("")
+    setIsSubmitting(false)
   }
 
   return (
