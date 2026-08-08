@@ -80,7 +80,7 @@ export const translations = {
     nav: {
       home: "Home",
       about: "About",
-      portfolio: "Portfolio",
+      portfolio: "Projects",
       contact: "Contact",
     },
     hero: {
