@@ -9,6 +9,7 @@ const sampleProjects = [
   {
     id: 1,
     Title: "MathNusa (Web Math)",
+    Category: "Math & Tools",
     Description: "Jawab Soal Matematika Lengkap dengan Langkah Solusi. Aplikasi web interaktif untuk aljabar, kalkulus, dan plotter grafik.",
     FullDescription: "Platform matematika interaktif MathNusa yang dirancang untuk menjawab soal matematika lengkap dengan langkah-langkah solusi mendalam, fitur scan gambar, bank rumus lengkap, dan plotter grafik interaktif.",
     Img: "/mathnusa.png",
@@ -21,6 +22,7 @@ const sampleProjects = [
   {
     id: 2,
     Title: "Task Management App",
+    Category: "Web Apps",
     Description: "A collaborative task management application with drag-and-drop functionality, team workspaces, and real-time notifications.",
     FullDescription: "Intuitive kanban-style project management workspace. Enables teams to organize tasks into custom workflow columns, assign priority tags, set automated deadline reminders, attach file assets, and track project progress in real time.",
     Img: "/project2.png",
@@ -33,6 +35,7 @@ const sampleProjects = [
   {
     id: 3,
     Title: "Weather Dashboard",
+    Category: "Web Apps",
     Description: "An interactive weather dashboard with beautiful visualizations, 7-day forecasts, and location-based weather tracking.",
     FullDescription: "Sleek weather application utilizing real-time meteorological data. Provides current weather metrics, 7-day hourly forecasts, interactive radar weather maps, UV index alerts, and automated location detection.",
     Img: "/project1.png",
@@ -45,6 +48,7 @@ const sampleProjects = [
   {
     id: 4,
     Title: "Social Media Analytics",
+    Category: "Analytics",
     Description: "A comprehensive social media analytics dashboard that aggregates data from multiple platforms with real-time insights.",
     FullDescription: "All-in-one metrics aggregation tool for content creators and marketing managers. Connects with APIs to display audience growth, engagement rates, top-performing posts, and exportable PDF performance reports.",
     Img: "/project2.png",
@@ -238,17 +242,21 @@ const Portofolio = () => {
   const { t } = useLanguage()
   const [projects] = useState(sampleProjects)
   const [searchTerm, setSearchTerm] = useState("")
+  const [selectedCategory, setSelectedCategory] = useState("All")
   const [selectedProject, setSelectedProject] = useState(null)
 
   useEffect(() => {
     AOS.init({ once: true, duration: 800 })
   }, [])
 
-  const filteredProjects = projects.filter(p => 
-    p.is_published && 
-    (p.Title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-     p.Description.toLowerCase().includes(searchTerm.toLowerCase()))
-  )
+  const categories = ["All", ...Array.from(new Set(projects.map(p => p.Category).filter(Boolean)))]
+
+  const filteredProjects = projects.filter(p => {
+    const matchesCategory = selectedCategory === "All" || p.Category === selectedCategory
+    const matchesSearch = p.Title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                          p.Description.toLowerCase().includes(searchTerm.toLowerCase())
+    return p.is_published && matchesCategory && matchesSearch
+  })
 
   return (
     <section id="Portofolio" className="relative min-h-screen py-24 overflow-hidden">
@@ -257,7 +265,7 @@ const Portofolio = () => {
       </Helmet>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-14">
+        <div className="text-center mb-10">
           <h2 
             className="text-4xl md:text-5xl font-extrabold gradient-text"
             data-aos="zoom-in-up"
@@ -276,12 +284,9 @@ const Portofolio = () => {
           </p>
         </div>
 
-        <div 
-          className="max-w-md mx-auto mb-12"
-          data-aos="fade-up"
-          data-aos-delay="200"
-        >
-          <div className="relative group">
+        {/* Search Bar & Category Filter Pills */}
+        <div className="space-y-6 max-w-2xl mx-auto mb-12" data-aos="fade-up" data-aos-delay="200">
+          <div className="relative group max-w-md mx-auto">
             <div className="absolute -inset-0.5 bg-gradient-to-r from-primary via-purple-500 to-accent rounded-2xl opacity-0 group-hover:opacity-40 blur-md transition-all duration-500" />
             <div className="relative flex items-center glass rounded-xl overflow-hidden border border-white/15 px-4 py-1">
               <Search className="w-5 h-5 text-purple-400 ml-1" />
@@ -293,6 +298,35 @@ const Portofolio = () => {
                 className="w-full bg-transparent px-3 py-3 text-sm text-white placeholder-gray-400 outline-none"
               />
             </div>
+          </div>
+
+          {/* Category Filter Pills */}
+          <div className="flex flex-wrap items-center justify-center gap-2">
+            {categories.map((cat, idx) => {
+              const isActive = selectedCategory === cat
+              const count = cat === "All" 
+                ? projects.length 
+                : projects.filter(p => p.Category === cat).length
+
+              return (
+                <button
+                  key={idx}
+                  onClick={() => setSelectedCategory(cat)}
+                  className={`relative px-4 py-2 rounded-full text-xs font-semibold transition-all duration-300 flex items-center gap-2 ${
+                    isActive 
+                      ? "bg-gradient-to-r from-primary to-accent text-white shadow-lg shadow-primary/30 border border-purple-400/50 scale-105" 
+                      : "glass text-gray-300 hover:text-white border border-white/10 hover:border-white/20 hover:bg-white/5"
+                  }`}
+                >
+                  <span>{cat === "All" ? "Semua Proyek" : cat}</span>
+                  <span className={`px-1.5 py-0.5 rounded-full text-[10px] ${
+                    isActive ? "bg-white/20 text-white" : "bg-white/10 text-gray-400"
+                  }`}>
+                    {count}
+                  </span>
+                </button>
+              )
+            })}
           </div>
         </div>
 
