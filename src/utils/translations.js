@@ -5,7 +5,7 @@ export const translations = {
     nav: {
       home: "Home",
       about: "About",
-      portfolio: "Portofolio",
+      portfolio: "Proyek",
       contact: "Contact",
     },
     hero: {
