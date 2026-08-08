@@ -13,7 +13,7 @@ const sampleProjects = [
     Description: "Jawab Soal Matematika Lengkap dengan Langkah Solusi. Aplikasi web interaktif untuk aljabar, kalkulus, dan plotter grafik.",
     FullDescription: "Platform matematika interaktif MathNusa yang dirancang untuk menjawab soal matematika lengkap dengan langkah-langkah solusi mendalam, fitur scan gambar, bank rumus lengkap, dan plotter grafik interaktif.",
     Img: "/mathnusa.png",
-    Link: "https://github.com/AzharS46/web_math",
+    Link: "https://web-math.vercel.app/",
     Github: "https://github.com/AzharS46/web_math",
     TechStack: ["HTML5", "CSS3", "JavaScript", "MathEngine"],
     Features: ["Penjawab Soal Matematika", "Langkah Solusi Lengkap", "Bank Rumus & Plotter", "Tema Dark Emerald"],
